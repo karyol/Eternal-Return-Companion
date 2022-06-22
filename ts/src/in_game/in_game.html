@@ -6,14 +6,14 @@
   <link rel="stylesheet" href="../../css/header.css" />
   <link rel="stylesheet" href="../../css/ingame.css" />
   <link rel="stylesheet" href="../../css/modal.css" />
-  <title>Overwolf Sample App - In-Game page</title>
+  <title>Eternal Return Companion</title>
 </head>
 <body class="in-game">
   <!-- -------------------------------- Header ------------------------------- -->
 
   <header id="header" class="app-header">
-    <img src="../../img/header_icon.svg" />
-    <h1>Sample App / in-game window</h1>
+    <img src="../../icons/IconMouseOver.png" />
+    <h1>Eternal Return Companion</h1>
     <h1 class="hotkey-text">
       Show/Hide Hotkey:
       <kbd id="hotkey"></kbd>
@@ -39,14 +39,7 @@
       </div>
     </div>
     <div id="other">
-      <h1>Real-time Game Data</h1>
-      <p id="infoParagraph">
-        The background controller of this app is listening to all the game
-        events and info updates, and sends them to this window, that prints
-        them to the screen. Some specific events (Match Start/End, Kill and
-        Death) are painted in <span style="color: #00DEFA">teal</span> and
-        logged to the developers console.
-      </p>
+      <div id="selectedCharacter"></div>
     </div>
   </main>
 

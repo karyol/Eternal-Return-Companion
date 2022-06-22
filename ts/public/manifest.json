@@ -2,12 +2,12 @@
   "manifest_version": 1,
   "type": "WebApp",
   "meta": {
-    "name": "Sample App",
-    "author": "Overwolf",
-    "version": "3.0.3",
+    "name": "Eternal Return Companion",
+    "author": "Baron Drakula",
+    "version": "1.0.0",
     "minimum-overwolf-version": "0.160.0",
-    "description": "An example app for developers new to Overwolf",
-    "dock_button_title": "Sample - TS",
+    "description": "Companion app for Eternal Return game",
+    "dock_button_title": "ER Companion",
     "icon": "icons/IconMouseOver.png",
     "icon_gray": "icons/IconMouseNormal.png",
     "launcher_icon": "icons/desktop-icon.ico",
@@ -20,7 +20,7 @@
   "data": {
     "start_window": "background",
     "hotkeys": {
-      "sample_app_ts_showhide": {
+      "er_companion_showhide": {
         "title": "Show/Hide In-Game Window",
         "action-type": "toggle",
         "default": "Ctrl+F"
@@ -82,57 +82,18 @@
     "game_targeting": {
       "type": "dedicated",
       "game_ids": [
-        21216,
-        7764,
-        5426,
-        21634,
-        8032,
-        10844,
-        10906,
-        10826,
-        21404,
-        7212,
-        21640,
-        7314,
-        21626,
-        8954
+        21672
       ]
     },
     "game_events": [
-      21216,
-      7764,
-      5426,
-      21634,
-      8032,
-      10844,
-      10906,
-      10826,
-      21404,
-      7212,
-      21640,
-      7314,
-      21626,
-      8954
+      21672
     ],
     "launch_events": [
       {
         "event": "GameLaunch",
         "event_data": {
           "game_ids": [
-            21216,
-            7764,
-            5426,
-            21634,
-            8032,
-            10844,
-            10906,
-            10826,
-            21404,
-            7212,
-            21640,
-            7314,
-            21626,
-            8954
+            21672
           ]
         },
         "start_minimized": true

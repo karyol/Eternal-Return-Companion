@@ -27,7 +27,11 @@ h1 {
   display: flex;
   justify-content: space-between;
   flex: 0 0 auto;
-  width: calc(100% - 210px);
+  width: calc(50% - 210px);
+}
+
+#logs > #infoUpdates {
+  display: none;
 }
 
 .logColumn {
@@ -46,18 +50,31 @@ h1 {
 }
 
 #other {
-  display: flex;
-  flex-direction: column;
-  flex: 0 0 auto;
-  width: 210px;
+  width: 100%;
 }
 
-#other > #infoParagraph {
+#other #infoParagraph {
   font-style: normal;
   font-weight: normal;
   font-size: 16px;
   line-height: 150%;
   color: #8d8d8d;
+  margin: 0;
+  margin-left: 10px;
+}
+
+#other .inline {
+  display: flex;
+  align-items: center;
+}
+
+#selectedCharacter h1 {
+  padding: 0 10px;
+}
+
+#selectedWeapon {
+  color: white;
+  font-size: 18px;
 }
 
 #other > #sampleAdText {
