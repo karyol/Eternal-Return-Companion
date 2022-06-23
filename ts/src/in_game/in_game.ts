@@ -1,3 +1,5 @@
+import $ from 'jquery';
+
 import {
   OWGames,
   OWGamesEvents,
@@ -19,17 +21,17 @@ class InGame extends AppWindow {
   private _gameEventsListener: OWGamesEvents;
   private _eventsLog: HTMLElement;
   private _infoLog: HTMLElement;
-  private _mainContainer: HTMLElement;
   private _selectedCharacter: HTMLElement;
   private _selectedCharacterID: number;
   private _selectedCharacterName: string;
+  private _gameVersion: string;
 
   private constructor() {
     super(kWindowNames.inGame);
 
+    this._gameVersion = '0.61.0';
     this._eventsLog = document.getElementById('eventsLog');
     this._infoLog = document.getElementById('infoLog');
-    this._mainContainer = document.getElementById('other');
     this._selectedCharacter = document.getElementById('selectedCharacter');
 
     this.setToggleHotkeyBehavior();
@@ -67,7 +69,7 @@ class InGame extends AppWindow {
   }
 
   // Special events will be highlighted in the event log
-  private onNewEvents(e) {
+  private async onNewEvents(e) {
     const shouldHighlight = e.events.some(event => {
       switch (event.name) {
         case 'select_character':
@@ -92,7 +94,7 @@ class InGame extends AppWindow {
         selectedCharacter.textContent = this._selectedCharacterName;
 
         const characterImage = document.createElement('img');
-        characterImage.src = "https://cdn.dak.gg/er/game-assets/0.60.0/character/CharCommunity_" + this._selectedCharacterName + "_S000.png"
+        characterImage.src = "https://cdn.dak.gg/er/game-assets/" + this._gameVersion + "/character/CharCommunity_" + this._selectedCharacterName + "_S000.png"
 
         const selectedWeapon = document.createElement('div');
         selectedWeapon.id = "selectedWeapon";
@@ -106,16 +108,39 @@ class InGame extends AppWindow {
       case "select_weapon":
         const characterWeapon = kERCharacterWeapons[this._selectedCharacterID - 1];
         const weaponName = kERWeaponIDS[characterWeapon[e.events[0].data.substr(this._selectedCharacterID.toString().length) - 1]];
-        document.getElementById('selectedWeapon').textContent = weaponName;
+        const weaponIcon = document.createElement('img');
+        weaponIcon.src = "https://cdn.dak.gg/er/game-assets/" + this._gameVersion + "/common_new/Ico_Ability_" + weaponName + ".png";
+        document.getElementById('selectedWeapon').appendChild(weaponIcon);
+
         const url = "https://dak.gg/bser/characters/" + this._selectedCharacterName + "?teamMode=SOLO&weaponType=" + weaponName;
+        console.log(url);
+
+        // $('#tak').text('tak');
+        // document.getElementById('tak').textContent = url;
+
+        $.ajax({
+          url: url,
+          type: 'GET',
+          contentType: "text/html",
+          crossDomain: true,
+          success: (response) => {
+            var skillOrder = $($.parseHTML(response)).find(".character-detail__skills")[0].children[0].children[0].children[0];
+            document.getElementById('skillOrder').innerHTML = '';
+            document.getElementById('skillOrder').appendChild(skillOrder);
+
+            var popularBuilds = $($.parseHTML(response)).find(".item-builds");
+            document.getElementById('popularBuilds').innerHTML = '';
+            for (const build of popularBuilds) {
+              document.getElementById('popularBuilds').appendChild(build);
+            }
+          }
+        });
         break;
-      
+
       default:
         // document.getElementById('selectedWeapon').textContent = JSON.stringify(e.events[0]);
         break;
     }
-
-    
   }
 
   // Displays the toggle minimize/restore hotkey in the window header
@@ -173,8 +198,9 @@ class InGame extends AppWindow {
     // }
 
     if (log == this._eventsLog && data.events[0].name == "select_weapon") {
-      line.textContent = kERCharacterWeapons[this._selectedCharacterID - 1].toString();
-      // line.textContent = "https://dak.gg/bser/characters/" + this._selectedCharacterName + "?teamMode=SOLO&weaponType=" + kERWeaponIDS[parseInt(data.events[0].data)];
+      const characterWeapon = kERCharacterWeapons[this._selectedCharacterID - 1];
+      const weaponName = kERWeaponIDS[characterWeapon[data.events[0].data.substr(this._selectedCharacterID.toString().length) - 1]];
+      line.textContent = "https://dak.gg/bser/characters/" + this._selectedCharacterName + "?teamMode=SOLO&weaponType=" + weaponName;
     }
 
     if (highlight) {

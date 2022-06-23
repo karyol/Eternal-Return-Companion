@@ -3,6 +3,7 @@ export const kGamesFeatures = new Map<number, string[]>([
     // Eternal Return
     21672,
     [
+      'gep_internal',
       'me',
       'match_info',
       `matching`,
@@ -163,7 +164,7 @@ export const kERCharacterWeapons = [
   [6],
   [24],
   [24],
-  [6],
+  [5],
   [25],
   [4],
   [16],

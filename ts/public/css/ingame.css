@@ -19,7 +19,7 @@ h1 {
   font-family: "Roboto Mono", sans-serif;
   font-style: normal;
   font-weight: normal;
-  font-size: 18px;
+  font-size: 32px;
   color: #d5d5d5;
 }
 
@@ -93,6 +93,90 @@ h1 {
   font-weight: normal;
   font-size: 16px;
   line-height: 150%;
+}
+
+#other > div {
+  margin-bottom: 10px;
+}
+
+#other > #skillOrder > ul {
+  list-style: none;
+  display: flex;
+  align-items: center;
+  padding: 0;
+  margin: 0;
+}
+
+#other > #skillOrder > ul > li > img {
+  width: 50px;
+}
+
+#other > #skillOrder > ul > li > span {
+  position: absolute;
+  width: 14px;
+  height: 14px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background-color: rgba(0,0,0,.7);
+  color: #fff;
+  font-size: 12px;
+  font-weight: 700;
+  line-height: 12px;
+  margin-top: -18px;
+  margin-left: 36px;
+}
+
+#other > #popularBuilds > .item-builds {
+  display: flex;
+}
+
+#other > #popularBuilds > .item-builds > .item {
+  position: relative;
+  font-size: 0;
+  display: inline-flex;
+  flex: 0 0 auto;
+  justify-content: center;
+  align-items: center;
+  width: 51px;
+  height: 32px;
+  background-repeat: no-repeat;
+  background-size: 100% 100%;
+  vertical-align: middle;
+}
+
+.item--Epic {
+  background-image: url(https://dak.gg/bser/images/common/ico-itemgradebg-04.svg);
+}
+
+.item--Legend {
+  background-image: url(https://dak.gg/bser/images/common/ico-itemgradebg-05.svg);
+}
+
+.item--Uncommon {
+  background-image: url(https://dak.gg/bser/images/common/ico-itemgradebg-02.svg);
+}
+
+.item--Rare {
+  background-image: url(https://dak.gg/bser/images/common/ico-itemgradebg-03.svg);
+}
+
+#other > #popularBuilds > .item-builds > div > img {
+  max-width: 51px;
+  max-height: 32px;
+}
+
+.fa-chevron-right {
+  margin-left: 8px;
+  margin-right: 8px;
+  color: #646464;
+  font-size: 32px;
+  font-weight: 900;
+  margin-bottom: 5px;
+}
+
+.fa-chevron-right:before {
+  content: ">";
 }
 
 .dataText {
