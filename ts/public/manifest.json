@@ -2,11 +2,11 @@
   "manifest_version": 1,
   "type": "WebApp",
   "meta": {
-    "name": "Eternal Return Companion",
+    "name": "Eternal Return Cobalt Companion",
     "author": "Baron Drakula",
     "version": "1.0.0",
     "minimum-overwolf-version": "0.160.0",
-    "description": "Companion app for Eternal Return game",
+    "description": "Companion app for Eternal Return Cobalt Protocol mode",
     "dock_button_title": "ER Companion",
     "icon": "icons/IconMouseOver.png",
     "icon_gray": "icons/IconMouseNormal.png",
@@ -22,9 +22,14 @@
     "start_window": "background",
     "hotkeys": {
       "er_companion_showhide": {
-        "title": "Show/Hide In-Game Window",
+        "title": "Show Logs(only for dev purpose)",
         "action-type": "toggle",
         "default": "Ctrl+F"
+      },
+      "cobalt_showhide": {
+        "title": "Show/Hide Window",
+        "action-type": "toggle",
+        "default": "Ctrl+X"
       }
     },
     "protocol_override_domains": {
@@ -44,7 +49,7 @@
     "windows": {
       "background": {
         "file": "background.html",
-        "background_optimization": false,
+        "background_optimization": true,
         "is_background_page": true
       },
       "desktop": {
@@ -53,6 +58,9 @@
         "native_window": true,
         "resizable": true,
         "transparent": true,
+        "block_top_window_navigation": true,
+        "popup_blocker": false,
+        "mute": true,
         "override_on_update": true,
         "size": {
           "width": 1212,
@@ -67,17 +75,47 @@
         "file": "in_game.html",
         "in_game_only": true,
         "focus_game_takeover": "ReleaseOnHidden",
-        "focus_game_takeover_release_hotkey": "sample_app_ts_showhide",
+        "focus_game_takeover_release_hotkey": "er_companion_showhide",
+        "block_top_window_navigation": true,
+        "mute": true,
+        "popup_blocker": false,
         "resizable": true,
+        "background_optimization": true,
+        "is_background_page": true,
         "transparent": true,
         "override_on_update": true,
         "size": {
-          "width": 1212,
+          "width": 600,
           "height": 699
         },
         "min_size": {
-          "width": 1212,
+          "width": 600,
           "height": 699
+        }
+      },
+      "cobalt": {
+        "file": "cobalt.html",
+        "in_game_only": true,
+        "focus_game_takeover": "ReleaseOnHidden",
+        "focus_game_takeover_release_hotkey": "cobalt_showhide",
+        "block_top_window_navigation": true,
+        "mute": true,
+        "popup_blocker": false,
+        "resizable": false,
+        "transparent": true,
+        "override_on_update": true,
+        "clickthrough": true,
+        "size": {
+          "width": 345,
+          "height": 371
+        },
+        "max_size": {
+          "width": 345,
+          "height": 371
+        },
+        "min_size": {
+          "width": 345,
+          "height": 371
         }
       }
     },

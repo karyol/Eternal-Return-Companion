@@ -11,11 +11,11 @@ export class AppWindow {
     this.mainWindow = new OWWindow('background');
     this.currWindow = new OWWindow(windowName);
 
-    const closeButton = document.getElementById('closeButton');
-    const maximizeButton = document.getElementById('maximizeButton');
-    const minimizeButton = document.getElementById('minimizeButton');
+    const closeButton = document.getElementById(windowName + 'closeButton');
+    const maximizeButton = document.getElementById(windowName + 'maximizeButton');
+    const minimizeButton = document.getElementById(windowName + 'minimizeButton');
 
-    const header = document.getElementById('header');
+    const header = document.getElementById(windowName + 'header');
 
     this.setDrag(header);
 

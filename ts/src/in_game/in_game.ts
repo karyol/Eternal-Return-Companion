@@ -1,13 +1,12 @@
-import $ from 'jquery';
-
 import {
   OWGames,
   OWGamesEvents,
-  OWHotkeys
+  OWHotkeys,
+  OWWindow
 } from "@overwolf/overwolf-api-ts";
 
 import { AppWindow } from "../AppWindow";
-import { kHotkeys, kWindowNames, kGamesFeatures, kERCharacterIDS, kERWeaponIDS, kERCharacterWeapons } from "../consts";
+import { kHotkeys, kWindowNames, kGamesFeatures } from "../consts";
 
 import WindowState = overwolf.windows.WindowStateEx;
 
@@ -17,22 +16,20 @@ import WindowState = overwolf.windows.WindowStateEx;
 // The window also sets up Ctrl+F as the minimize/restore hotkey.
 // Like the background window, it also implements the Singleton design pattern.
 class InGame extends AppWindow {
+  private _windows: Record<string, OWWindow> = {};
   private static _instance: InGame;
   private _gameEventsListener: OWGamesEvents;
   private _eventsLog: HTMLElement;
   private _infoLog: HTMLElement;
-  private _selectedCharacter: HTMLElement;
-  private _selectedCharacterID: number;
-  private _selectedCharacterName: string;
-  private _gameVersion: string;
 
   private constructor() {
     super(kWindowNames.inGame);
 
-    this._gameVersion = '0.61.0';
+    this._windows[kWindowNames.inGame] = new OWWindow(kWindowNames.inGame);
+    this._windows[kWindowNames.cobalt] = new OWWindow(kWindowNames.cobalt);
+
     this._eventsLog = document.getElementById('eventsLog');
     this._infoLog = document.getElementById('infoLog');
-    this._selectedCharacter = document.getElementById('selectedCharacter');
 
     this.setToggleHotkeyBehavior();
     this.setToggleHotkeyText();
@@ -47,6 +44,9 @@ class InGame extends AppWindow {
   }
 
   public async run() {
+    // this._windows[kWindowNames.cobalt].restore();
+    this._windows[kWindowNames.inGame].hide();
+    
     const gameClassId = await this.getCurrentGameClassId();
 
     const gameFeatures = kGamesFeatures.get(gameClassId);
@@ -75,6 +75,8 @@ class InGame extends AppWindow {
         case 'select_character':
         case 'select_weapon':
         case 'select_trait':
+        case 'matching_start':
+        case 'match_end':
           return true;
       }
 
@@ -82,64 +84,17 @@ class InGame extends AppWindow {
     });
     this.logLine(this._eventsLog, e, shouldHighlight);
 
-    switch (e.events[0].name) {
-      case "select_character":
-        this._selectedCharacter.innerHTML = '';
-        const divInline = document.createElement('div');
-        divInline.className = "inline";
+    if (e.events[0].name == "matching_start") {
+      var gameMode = e.events[0].data.split(',')[1].split(':')[1];
+      gameMode = gameMode.substr(1, gameMode.length - 3);
 
-        const selectedCharacter = document.createElement('h1');
-        this._selectedCharacterID = parseInt(e.events[0].data);
-        this._selectedCharacterName = kERCharacterIDS[parseInt(e.events[0].data) - 1];
-        selectedCharacter.textContent = this._selectedCharacterName;
+      if (gameMode == "cobalt") {
+        this._windows[kWindowNames.cobalt].restore();
+      }
+    }
 
-        const characterImage = document.createElement('img');
-        characterImage.src = "https://cdn.dak.gg/er/game-assets/" + this._gameVersion + "/character/CharCommunity_" + this._selectedCharacterName + "_S000.png"
-
-        const selectedWeapon = document.createElement('div');
-        selectedWeapon.id = "selectedWeapon";
-
-        divInline.appendChild(characterImage);
-        divInline.appendChild(selectedCharacter);
-        divInline.appendChild(selectedWeapon);
-        this._selectedCharacter.appendChild(divInline);
-        break;
-
-      case "select_weapon":
-        const characterWeapon = kERCharacterWeapons[this._selectedCharacterID - 1];
-        const weaponName = kERWeaponIDS[characterWeapon[e.events[0].data.substr(this._selectedCharacterID.toString().length) - 1]];
-        const weaponIcon = document.createElement('img');
-        weaponIcon.src = "https://cdn.dak.gg/er/game-assets/" + this._gameVersion + "/common_new/Ico_Ability_" + weaponName + ".png";
-        document.getElementById('selectedWeapon').appendChild(weaponIcon);
-
-        const url = "https://dak.gg/bser/characters/" + this._selectedCharacterName + "?teamMode=SOLO&weaponType=" + weaponName;
-        console.log(url);
-
-        // $('#tak').text('tak');
-        // document.getElementById('tak').textContent = url;
-
-        $.ajax({
-          url: url,
-          type: 'GET',
-          contentType: "text/html",
-          crossDomain: true,
-          success: (response) => {
-            var skillOrder = $($.parseHTML(response)).find(".character-detail__skills")[0].children[0].children[0].children[0];
-            document.getElementById('skillOrder').innerHTML = '';
-            document.getElementById('skillOrder').appendChild(skillOrder);
-
-            var popularBuilds = $($.parseHTML(response)).find(".item-builds");
-            document.getElementById('popularBuilds').innerHTML = '';
-            for (const build of popularBuilds) {
-              document.getElementById('popularBuilds').appendChild(build);
-            }
-          }
-        });
-        break;
-
-      default:
-        // document.getElementById('selectedWeapon').textContent = JSON.stringify(e.events[0]);
-        break;
+    if (e.events[0].name == "match_end") {
+      this._windows[kWindowNames.cobalt].close();
     }
   }
 
@@ -175,33 +130,6 @@ class InGame extends AppWindow {
   private logLine(log: HTMLElement, data, highlight) {
     const line = document.createElement('pre');
     line.textContent = JSON.stringify(data);
-
-    // if (log == this._eventsLog) {
-    //   switch (data.events[0].name) {
-    //     case "select_character":
-    //       line.textContent = JSON.stringify(data);
-    //       break;
-    //     case "matching_start":
-    //       var gameMode = data.events[0].data.split(',')[1].split(':')[1];
-    //       gameMode = gameMode.substr(1, gameMode.length - 3);
-    //       if (gameMode == "cobalt") {
-    //         line.textContent = "cobalt";
-    //         console.log("cobalt");
-    //       } else {
-    //         line.textContent = JSON.stringify(data);
-    //       }
-    //       break;
-    //     default:
-    //       line.textContent = JSON.stringify(data);
-    //       break;
-    //   }
-    // }
-
-    if (log == this._eventsLog && data.events[0].name == "select_weapon") {
-      const characterWeapon = kERCharacterWeapons[this._selectedCharacterID - 1];
-      const weaponName = kERWeaponIDS[characterWeapon[data.events[0].data.substr(this._selectedCharacterID.toString().length) - 1]];
-      line.textContent = "https://dak.gg/bser/characters/" + this._selectedCharacterName + "?teamMode=SOLO&weaponType=" + weaponName;
-    }
 
     if (highlight) {
       line.className = 'highlight';

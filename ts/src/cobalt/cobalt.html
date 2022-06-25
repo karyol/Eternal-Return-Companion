@@ -1,42 +1,36 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8" />
-  <link rel="stylesheet" href="../../css/general.css" />
-  <link rel="stylesheet" href="../../css/header.css" />
-  <link rel="stylesheet" href="../../css/ingame.css" />
-  <link rel="stylesheet" href="../../css/modal.css" />
-  <title>Eternal Return Companion</title>
+    <meta charset="UTF-8" />
+    <link rel="stylesheet" href="../../css/general.css" />
+    <link rel="stylesheet" href="../../css/header.css" />
+    <link rel="stylesheet" href="../../css/ingame.css" />
+    <link rel="stylesheet" href="../../css/modal.css" />
+    <title>Cobalt Protocol Helper</title>
 </head>
-<body class="in-game">
+<body id="dragCobalt" class="cobalt">
   <!-- -------------------------------- Header ------------------------------- -->
 
-  <header id="in_gameheader" class="app-header">
+  <header id="cobaltheader" class="app-header">
     <img src="../../icons/IconMouseOver.png" />
     <h1>Eternal Return Companion</h1>
     <h1 class="hotkey-text">
       Show/Hide Hotkey:
-      <kbd id="hotkey"></kbd>
+      <kbd id="cobalt-hotkey"></kbd>
     </h1>
     <div class="window-controls-group">
-      <button id="in_gameminimizeButton" class="window-control window-control-minimize" />
-      <button id="in_gamemaximizeButton" class="window-control window-control-maximize" />
-      <button id="in_gamecloseButton" class="window-control window-control-close" />
-    </div>
+        <button id="cobaltminimizeButton" class="window-control window-control-minimize" />
+        <button id="cobaltmaximizeButton" class="window-control window-control-maximize" />
+        <button id="cobaltcloseButton" class="window-control window-control-close" />
+      </div>
   </header>
 
   <!-- --------------------------------- Main -------------------------------- -->
   <main>
-    <div id="logs">
-      <div id="events" class="logColumn">
-        <h1>Game Events</h1>
-        <div id="eventsLog" class="dataText">
-        </div>
-      </div>
-      <div id="infoUpdates" class="logColumn">
-        <h1>Info Updates</h1>
-        <div id="infoLog" class="dataText"></div>
-      </div>
+    <div id="other">
+      <div id="selectedCharacter"></div>
+      <div id="skillOrder"></div>
+      <div id="popularBuilds"></div>
     </div>
   </main>
 
@@ -56,7 +50,7 @@
     // Removes failing protocol check. @see: http://stackoverflow.com/a/22152353/1958200
     ga('set', 'checkProtocolTask', function () { });
     ga('require', 'displayfeatures');
-    ga('send', 'pageview', '/in_game.html');
+    ga('send', 'pageview', '/cobalt.html');
   </script>
 </body>
 </html>
