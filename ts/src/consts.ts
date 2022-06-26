@@ -29,11 +29,9 @@ export const kGameClassIds = Array.from(kGamesFeatures.keys());
 export const kWindowNames = {
   inGame: 'in_game',
   cobalt: 'cobalt'
-  // desktop: 'desktop'
 };
 
 export const kHotkeys = {
-  toggle: 'er_companion_showhide',
   toggleCobalt: 'cobalt_showhide'
 };
 
@@ -126,7 +124,7 @@ export const kERWeaponIDS = [
 export const kERCharacterWeapons = [
   [14, 15 , 16, 18],
   [9, 10 ,11],
-  [16, 21, 19],
+  [19, 21, 16],
   [3, 13],
   [5, 6],
   [7, 8],
@@ -135,7 +133,7 @@ export const kERCharacterWeapons = [
   [10, 9],
   [1, 20],
   [16, 18],
-  [6, 7],
+  [7, 6],
   [15, 19],
   [21],
   [6, 5],

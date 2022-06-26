@@ -21,11 +21,6 @@
   "data": {
     "start_window": "background",
     "hotkeys": {
-      "er_companion_showhide": {
-        "title": "Show Logs(only for dev purpose)",
-        "action-type": "toggle",
-        "default": "Ctrl+F"
-      },
       "cobalt_showhide": {
         "title": "Show/Hide Window",
         "action-type": "toggle",
@@ -49,48 +44,25 @@
     "windows": {
       "background": {
         "file": "background.html",
-        "background_optimization": true,
+        "background_optimization": false,
         "is_background_page": true
-      },
-      "desktop": {
-        "file": "desktop.html",
-        "desktop_only": true,
-        "native_window": true,
-        "resizable": true,
-        "transparent": true,
-        "block_top_window_navigation": true,
-        "popup_blocker": false,
-        "mute": true,
-        "override_on_update": true,
-        "size": {
-          "width": 1212,
-          "height": 699
-        },
-        "min_size": {
-          "width": 1212,
-          "height": 699
-        }
       },
       "in_game": {
         "file": "in_game.html",
         "in_game_only": true,
         "focus_game_takeover": "ReleaseOnHidden",
-        "focus_game_takeover_release_hotkey": "er_companion_showhide",
-        "block_top_window_navigation": true,
-        "mute": true,
-        "popup_blocker": false,
-        "resizable": true,
-        "background_optimization": true,
-        "is_background_page": true,
+        "resizable": false,
         "transparent": true,
+        "clickthrough": true,
         "override_on_update": true,
+        "open_dev_tools": false,
         "size": {
-          "width": 600,
-          "height": 699
+          "width": 300,
+          "height": 90
         },
-        "min_size": {
-          "width": 600,
-          "height": 699
+        "start_position": {
+          "top": 10,
+          "left": 10
         }
       },
       "cobalt": {
@@ -98,13 +70,11 @@
         "in_game_only": true,
         "focus_game_takeover": "ReleaseOnHidden",
         "focus_game_takeover_release_hotkey": "cobalt_showhide",
-        "block_top_window_navigation": true,
-        "mute": true,
-        "popup_blocker": false,
         "resizable": false,
         "transparent": true,
         "override_on_update": true,
         "clickthrough": true,
+        "open_dev_tools": false,
         "size": {
           "width": 345,
           "height": 371

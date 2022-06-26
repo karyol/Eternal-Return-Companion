@@ -21,6 +21,8 @@ class InGame extends AppWindow {
   private _gameEventsListener: OWGamesEvents;
   private _eventsLog: HTMLElement;
   private _infoLog: HTMLElement;
+  private _inGameBody: HTMLElement;
+  private _startingComm: HTMLElement;
 
   private constructor() {
     super(kWindowNames.inGame);
@@ -30,9 +32,8 @@ class InGame extends AppWindow {
 
     this._eventsLog = document.getElementById('eventsLog');
     this._infoLog = document.getElementById('infoLog');
-
-    this.setToggleHotkeyBehavior();
-    this.setToggleHotkeyText();
+    this._inGameBody = document.getElementById('inGameBody');
+    this._startingComm = document.getElementById('startComm');
   }
 
   public static instance() {
@@ -44,9 +45,6 @@ class InGame extends AppWindow {
   }
 
   public async run() {
-    // this._windows[kWindowNames.cobalt].restore();
-    this._windows[kWindowNames.inGame].hide();
-    
     const gameClassId = await this.getCurrentGameClassId();
 
     const gameFeatures = kGamesFeatures.get(gameClassId);
@@ -65,6 +63,11 @@ class InGame extends AppWindow {
   }
 
   private onInfoUpdates(info) {
+    if (info.player_info) {
+      this._inGameBody.style.backgroundColor = "#33333300";
+      this._startingComm.style.display = "none";
+    }
+    
     this.logLine(this._infoLog, info, false);
   }
 
@@ -84,51 +87,19 @@ class InGame extends AppWindow {
     });
     this.logLine(this._eventsLog, e, shouldHighlight);
 
-    if (e.events[0].name == "matching_start") {
-      var gameMode = e.events[0].data.split(',')[1].split(':')[1];
-      gameMode = gameMode.substr(1, gameMode.length - 3);
-
-      if (gameMode == "cobalt") {
-        this._windows[kWindowNames.cobalt].restore();
-      }
+    if (e.events[0].name == "matching_standby") {
+      this._windows[kWindowNames.cobalt].restore();
     }
 
     if (e.events[0].name == "match_end") {
-      this._windows[kWindowNames.cobalt].close();
+      this._windows[kWindowNames.cobalt].hide();
     }
-  }
-
-  // Displays the toggle minimize/restore hotkey in the window header
-  private async setToggleHotkeyText() {
-    const gameClassId = await this.getCurrentGameClassId();
-    const hotkeyText = await OWHotkeys.getHotkeyText(kHotkeys.toggle, gameClassId);
-    const hotkeyElem = document.getElementById('hotkey');
-    hotkeyElem.textContent = hotkeyText;
-  }
-
-  // Sets toggleInGameWindow as the behavior for the Ctrl+F hotkey
-  private async setToggleHotkeyBehavior() {
-    const toggleInGameWindow = async (
-      hotkeyResult: overwolf.settings.hotkeys.OnPressedEvent
-    ): Promise<void> => {
-      console.log(`pressed hotkey for ${hotkeyResult.name}`);
-      const inGameState = await this.getWindowState();
-
-      if (inGameState.window_state === WindowState.NORMAL ||
-        inGameState.window_state === WindowState.MAXIMIZED) {
-        this.currWindow.minimize();
-      } else if (inGameState.window_state === WindowState.MINIMIZED ||
-        inGameState.window_state === WindowState.CLOSED) {
-        this.currWindow.restore();
-      }
-    }
-
-    OWHotkeys.onHotkeyDown(kHotkeys.toggle, toggleInGameWindow);
   }
 
   // Appends a new line to the specified log
   private logLine(log: HTMLElement, data, highlight) {
     const line = document.createElement('pre');
+    console.log(data);
     line.textContent = JSON.stringify(data);
 
     if (highlight) {

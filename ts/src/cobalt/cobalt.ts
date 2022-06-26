@@ -3,7 +3,8 @@ import $ from 'jquery';
 import {
   OWGames,
   OWGamesEvents,
-  OWHotkeys
+  OWHotkeys,
+  OWWindow
 } from "@overwolf/overwolf-api-ts";
 
 import { AppWindow } from "../AppWindow";
@@ -17,6 +18,7 @@ import WindowState = overwolf.windows.WindowStateEx;
 // The window also sets up Ctrl+F as the minimize/restore hotkey.
 // Like the background window, it also implements the Singleton design pattern.
 class InGame extends AppWindow {
+  private _windows: Record<string, OWWindow> = {};
   private static _instance: InGame;
   private _gameEventsListener: OWGamesEvents;
   private _selectedCharacter: HTMLElement;
@@ -27,6 +29,9 @@ class InGame extends AppWindow {
 
   private constructor() {
     super(kWindowNames.cobalt);
+
+    this._windows[kWindowNames.inGame] = new OWWindow(kWindowNames.inGame);
+    this._windows[kWindowNames.cobalt] = new OWWindow(kWindowNames.cobalt);
 
     overwolf.games.getRunningGameInfo(function(){
         overwolf.windows.changePosition(kWindowNames.cobalt, 
@@ -73,8 +78,11 @@ class InGame extends AppWindow {
 
   // Special events will be highlighted in the event log
   private async onNewEvents(e) {
+    var counter: number = 0;
+
     switch (e.events[0].name) {
       case "select_character":
+        counter = 0;
         this._cobaltBody.style.backgroundColor = "#33333380";
 
         this._selectedCharacter.innerHTML = '';
@@ -105,6 +113,7 @@ class InGame extends AppWindow {
         weaponIcon.src = "https://cdn.dak.gg/er/game-assets/" + this._gameVersion + "/common_new/Ico_Ability_" + weaponName + ".png";
         document.getElementById('selectedWeapon').appendChild(weaponIcon);
 
+        this._selectedCharacterName = this._selectedCharacterName.replace(/\s/g, '');
         const url = "https://dak.gg/bser/characters/" + this._selectedCharacterName + "?teamMode=SOLO&weaponType=" + weaponName;
 
         $.ajax({
@@ -124,6 +133,19 @@ class InGame extends AppWindow {
             }
           }
         });
+        break;
+
+      case "team_character":
+        counter++;
+        // if (counter < 3) {
+        //   this._windows[kWindowNames.cobalt].hide();
+        // }
+        // if (counter == 3) {
+        //   this._windows[kWindowNames.cobalt].restore();
+        // }
+        // if (counter > 3) {
+        //   this._windows[kWindowNames.cobalt].hide();
+        // }
         break;
 
       default:

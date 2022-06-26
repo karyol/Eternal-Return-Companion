@@ -23,8 +23,28 @@ h1 {
   color: #d5d5d5;
 }
 
+h2 {
+  font-family: "Roboto Mono", sans-serif;
+  font-style: normal;
+  font-weight: normal;
+  font-size: 20px;
+  color: #d5d5d5;
+}
+
+#startComm {
+  display: flex;
+  margin: 10px;
+  align-items: center;
+}
+
+#startComm > img {
+  height: 70px;
+  padding-right: 10px;
+}
+
 #logs {
   display: flex;
+  display: none;
   justify-content: space-between;
   flex: 0 0 auto;
   width: 100%;
@@ -47,6 +67,14 @@ h1 {
 
 #cobaltheader {
   display: none;
+}
+
+#in_gameheader {
+  display: none;
+}
+
+.in-game > main {
+  padding: 0;
 }
 
 .cobalt {
