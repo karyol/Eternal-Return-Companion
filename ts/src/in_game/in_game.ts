@@ -89,6 +89,7 @@ class InGame extends AppWindow {
 
     if (e.events[0].name == "matching_standby") {
       this._windows[kWindowNames.cobalt].restore();
+      this._windows[kWindowNames.cobalt].hide();
     }
 
     if (e.events[0].name == "match_end") {

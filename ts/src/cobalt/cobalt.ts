@@ -26,6 +26,7 @@ class InGame extends AppWindow {
   private _selectedCharacterName: string;
   private _gameVersion: string;
   private _cobaltBody: HTMLElement;
+  private _counter: number;
 
   private constructor() {
     super(kWindowNames.cobalt);
@@ -78,11 +79,9 @@ class InGame extends AppWindow {
 
   // Special events will be highlighted in the event log
   private async onNewEvents(e) {
-    var counter: number = 0;
-
     switch (e.events[0].name) {
       case "select_character":
-        counter = 0;
+        this._counter = 0;
         this._cobaltBody.style.backgroundColor = "#33333380";
 
         this._selectedCharacter.innerHTML = '';
@@ -95,6 +94,7 @@ class InGame extends AppWindow {
         selectedCharacter.textContent = this._selectedCharacterName;
 
         const characterImage = document.createElement('img');
+        this._selectedCharacterName = this._selectedCharacterName.replace(/\s/g, '');
         characterImage.src = "https://cdn.dak.gg/er/game-assets/" + this._gameVersion + "/character/CharCommunity_" + this._selectedCharacterName + "_S000.png"
 
         const selectedWeapon = document.createElement('div');
@@ -112,8 +112,7 @@ class InGame extends AppWindow {
         const weaponIcon = document.createElement('img');
         weaponIcon.src = "https://cdn.dak.gg/er/game-assets/" + this._gameVersion + "/common_new/Ico_Ability_" + weaponName + ".png";
         document.getElementById('selectedWeapon').appendChild(weaponIcon);
-
-        this._selectedCharacterName = this._selectedCharacterName.replace(/\s/g, '');
+        
         const url = "https://dak.gg/bser/characters/" + this._selectedCharacterName + "?teamMode=SOLO&weaponType=" + weaponName;
 
         $.ajax({
@@ -136,7 +135,11 @@ class InGame extends AppWindow {
         break;
 
       case "team_character":
-        counter++;
+        this._counter++;
+        console.log(this._counter);
+        if (this._counter == 3) {
+          this._windows[kWindowNames.cobalt].restore();
+        }
         // if (counter < 3) {
         //   this._windows[kWindowNames.cobalt].hide();
         // }

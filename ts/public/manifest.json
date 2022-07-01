@@ -6,7 +6,7 @@
     "author": "Baron Drakula",
     "version": "1.0.0",
     "minimum-overwolf-version": "0.160.0",
-    "description": "Companion app for Eternal Return Cobalt Protocol mode",
+    "description": "Companion app for Eternal Return Cobalt Protocol mode.",
     "dock_button_title": "ER Companion",
     "icon": "icons/IconMouseOver.png",
     "icon_gray": "icons/IconMouseNormal.png",
